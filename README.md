@@ -10,7 +10,7 @@ tui tự viết vài cái để đây th
 
 This project uses a pre-computed embedding file: **`X_float32.npy`** which is the embeding using **sentence-transformers/all-MiniLM-L6-v2** model on the Quora Question Pairs dataset
 
-- Generating this file from scratch takes a **long time** (if using cpu) and requires a **GPU** to process efficiently.
+- Generating this file from scratch takes a **long time** (if using cpu) and requires a **GPU** (actually takes only about 10 mins on GPU T4 of GG Colab free trial) to process efficiently.
 - To save time and avoid recomputing, we provide the pre-computed embeddings here.
 - This way, anyone who wants to run the project can **directly load the embeddings** instead of re-running the entire model.
 
