@@ -14,7 +14,7 @@ This project implements text deduplication on the Quora Question Pairs (QQP) dat
 project/
 │
 ├── gen_csv_file_and_eval.ipynb    # Main clustering pipeline + evaluation
-├── query_clusters.py               # demo using ipynb (do not having web/app here)
+├── query_clusters.ipynb               # demo using ipynb (do not having web/app here)
 ├── app.py                          # Streamlit web application
 │
 ├── qqp_clusters_grouped.csv       # Ground truth clusters
@@ -112,7 +112,9 @@ original_id,text,pred_cluster_id,pred_cluster_rank,mean_semantic_remain
 - Representative sentence is the one closest to the cluster's semantic mean (centroid)
 
 ---
-
+## How to run/use this code base
+If user plans to run the code again, push the file gen_csv_file_and_eval.ipynb to Google colab and click run all; it will result the csv files and evaluation.
+Or else if wanting to run the demo code do the same for query_clusters.ipynb 
 ## About the Data
 ---
 This project uses a pre-computed embedding file: **`X_float32.npy`** which is the embeding using **sentence-transformers/all-MiniLM-L6-v2** model on the Quora Question Pairs dataset
