@@ -15,12 +15,12 @@ project/
 │
 ├── gen_csv_file_and_eval.ipynb    # Main clustering pipeline + evaluation
 ├── query_clusters.ipynb               # demo using ipynb (do not having web/app here)
-├── app.py                          # Streamlit web application
-│
-├── qqp_clusters_grouped.csv       # Ground truth clusters
-├── qqp_pred_clusters_faiss_grouped.csv  # Predicted clusters (FAISS)
-│
-└── requirements.txt                # Python dependencies
+└── web/                         # Streamlit web application
+    ├── qqp_clusters_grouped.csv       # Ground truth clusters
+    ├── qqp_pred_clusters_faiss_grouped.csv  # Predicted clusters (FAISS)
+    ├── results_minhash.csv # Predicted clusters (MinHash)
+    ├── results_simhash.csv # Predicted clusters (SimHash)
+    └── requirements.txt                # Python dependencies
 
 ```
 We cant include file X_float32.npy here because the file itself is pretty large (700 MB)
