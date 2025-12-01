@@ -188,7 +188,10 @@ X = X.astype("float32")
 ```
 
 ---
-
+## How to run/use this code base
+If user plans to run the code again, push the file gen_csv_file_and_eval.ipynb to Google colab and click run all; it will result the csv files and evaluation.
+Or else if wanting to run the demo code do the same for query_clusters.ipynb 
+---
 ## 🚀 How to Run the Web Application
 
 This project includes a **Streamlit** dashboard that allows you to interactively search and visualize the clusters using all four methods.
@@ -217,9 +220,6 @@ This project includes a **Streamlit** dashboard that allows you to interactively
 4.  **Access the Dashboard:**
     The application will automatically open at `http://localhost:8501`.
 ---
-## How to run/use this code base
-If user plans to run the code again, push the file gen_csv_file_and_eval.ipynb to Google colab and click run all; it will result the csv files and evaluation.
-Or else if wanting to run the demo code do the same for query_clusters.ipynb 
 ## About the Data
 ---
 This project uses a pre-computed embedding file: **`X_float32.npy`** which is the embeding using **sentence-transformers/all-MiniLM-L6-v2** model on the Quora Question Pairs dataset
