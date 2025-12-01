@@ -30,7 +30,7 @@ We cant include file X_float32.npy here because the file itself is pretty large 
 **What it is:** Pre-computed sentence embeddings for all questions in the dataset.
 
 **Format:** NumPy array of shape `(N, 384)` where:
-- `N` = number of questions (e.g., 404,290 questions)
+- `N` = number of questions (e.g., 493874 questions)
 - `384` = embedding dimension (from `all-MiniLM-L6-v2` model)
 
 **Purpose:** 
