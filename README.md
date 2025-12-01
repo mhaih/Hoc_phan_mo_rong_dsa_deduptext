@@ -113,6 +113,110 @@ original_id,text,pred_cluster_id,pred_cluster_rank,mean_semantic_remain
 - Representative sentence is the one closest to the cluster's semantic mean (centroid)
 
 ---
+
+### 4. `results_minhash.csv`
+**What it is:** Predicted clusters generated using the **MinHash** algorithm (Lexical Deduplication).
+
+**Columns:**
+* `id` (int): Original index in the dataset (0 to N-1).
+* `text` (str): The actual question text.
+* `cluster_id` (int): Predicted cluster ID based on Jaccard similarity of text shingles.
+* `cluster_rank` (int): Cluster rank by size.
+* `is_representative` (int): 1 if this is the centroid of the cluster, 0 otherwise.
+
+**Purpose:**
+* Groups questions based on **word overlap** and surface-level textual similarity.
+* Excellent for catching near-duplicates with slight spelling variations or reordering.
+* Acts as a "Lexical Search" baseline.
+
+---
+
+### 5. `results_simhash.csv`
+**What it is:** Predicted clusters generated using the **SimHash** algorithm (Semantic Hashing).
+
+**Columns:**
+* `id` (int): Original index in the dataset.
+* `text` (str): The actual question text.
+* `cluster_id` (int): Predicted cluster ID based on Hamming distance of binary fingerprints.
+* `cluster_rank` (int): Cluster rank by size.
+* `is_representative` (int): 1 if this is the centroid, 0 otherwise.
+
+**Purpose:**
+* Groups questions based on the **geometry of their embeddings**, compressed into 64-bit binary fingerprints.
+* Optimized for speed and memory efficiency compared to raw FAISS search.
+
+---
+
+## 🛠️ How to Use This Codebase
+
+### 1. Generating Data
+If you plan to run the code again:
+1.  Push the file `gen_csv_file_and_eval.ipynb` to Google Colab.
+2.  Click "Run All".
+3.  This will generate the CSV files and evaluation metrics.
+
+### 2. Running the Demo (Notebook)
+If you want to run the demo code without the web interface, run `query_clusters.ipynb`.
+
+### 3. About the Embeddings (`X_float32.npy`)
+This project uses pre-computed embeddings using the **sentence-transformers/all-MiniLM-L6-v2** model.
+- Generating this from scratch takes a long time on CPU.
+- It takes about 10 mins on a T4 GPU (Google Colab).
+
+**Option A: Download Pre-computed (Recommended)**
+```python
+import gdown
+import numpy as np
+
+url = "[https://drive.google.com/uc?id=177zbL5sW2mUb4n8TVoviw7dnpyOLfhPn](https://drive.google.com/uc?id=177zbL5sW2mUb4n8TVoviw7dnpyOLfhPn)"
+output = "X_float32.npy"
+gdown.download(url, output, quiet=False)
+
+X = np.load("X_float32.npy")
+```
+
+**Option B: Recompute**
+```python
+import numpy as np
+from sentence_transformers import SentenceTransformer
+
+EMBED_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
+model = SentenceTransformer(EMBED_MODEL)
+texts = list(questions)
+X = model.encode(texts, batch_size=256, show_progress_bar=True, convert_to_numpy=True, normalize_embeddings=True)
+X = X.astype("float32")
+```
+
+---
+
+## 🚀 How to Run the Web Application
+
+This project includes a **Streamlit** dashboard that allows you to interactively search and visualize the clusters using all four methods.
+
+### Prerequisites
+1.  Ensure you have Python installed (3.8+).
+2.  Ensure you have the `X_float32.npy` file placed inside the `web/` folder.
+
+### Installation & Execution
+
+1.  **Navigate to the web directory:**
+    ```bash
+    cd project/web
+    ```
+
+2.  **Install dependencies:**
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+3.  **Run the App:**
+    ```bash
+    streamlit run app.py
+    ```
+
+4.  **Access the Dashboard:**
+    The application will automatically open at `http://localhost:8501`.
+---
 ## How to run/use this code base
 If user plans to run the code again, push the file gen_csv_file_and_eval.ipynb to Google colab and click run all; it will result the csv files and evaluation.
 Or else if wanting to run the demo code do the same for query_clusters.ipynb 
