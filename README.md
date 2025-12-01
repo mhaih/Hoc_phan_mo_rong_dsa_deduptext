@@ -186,11 +186,6 @@ X = model.encode(texts, batch_size=256, show_progress_bar=True, convert_to_numpy
 X = X.astype("float32")
 ```
 
-## How to run/use this code base
-
-If user plans to run the code again, push the file gen_csv_file_and_eval.ipynb to Google colab and click run all; it will result the csv files and evaluation.
-Or else if wanting to run the demo code do the same for query_clusters.ipynb 
-
 ---
 ## 🚀 How to Run the Web Application
 
