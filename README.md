@@ -7,7 +7,8 @@ This project implements text deduplication on the Quora Question Pairs (QQP) dat
 2. **Predicted using FAISS**: Using FAISS (Facebook AI Similarity Search) with cosine similarity
 3. **SimHash**
 4. **MinHash**
-
+## Links
+Link to the github page: https://github.com/mhaih/Hoc_phan_mo_rong_dsa_deduptext
 ## 📁 Project Structure
 
 ```
