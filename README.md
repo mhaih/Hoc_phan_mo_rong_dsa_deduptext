@@ -8,7 +8,7 @@ This project implements text deduplication on the Quora Question Pairs (QQP) dat
 3. **SimHash**
 4. **MinHash**
 ## Links
-Link to the github page: https://github.com/mhaih/Hoc_phan_mo_rong_dsa_deduptext
+Link to the github repo: https://github.com/mhaih/Hoc_phan_mo_rong_dsa_deduptext
 ## 📁 Project Structure
 
 ```
