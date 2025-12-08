@@ -87,18 +87,31 @@ def load_model():
 def load_data():
     """
     Load Embeddings and ALL CSVs (FAISS, GT, MinHash, SimHash).
-    Renames columns to standard format: original_id, pred_cluster_id, pred_cluster_rank.
+    Strictly renames columns to standard format: 
+    [original_id, text, pred_cluster_id, pred_cluster_rank, is_representative]
     """
     X = np.load(EMBEDDINGS_PATH)
     
-    # 1. Load Ground Truth & FAISS
+    # 1. Load Ground Truth (Keep as is, it uses 'cluster_id' not 'pred_cluster_id')
     df_gt = pd.read_csv(GT_CSV)
-    df_faiss = pd.read_csv(FAISS_CSV)
     
-    # 2. Load MinHash/SimHash Results (Handle missing files gracefully)
+    # 2. Load FAISS Results & Normalize Columns
+    df_faiss = pd.read_csv(FAISS_CSV)
+    # Rename specifically for FAISS schema
+    df_faiss = df_faiss.rename(columns={
+        'id': 'original_id',  # If present
+        'mean_semantic_remain': 'is_representative' # Normalize this
+    })
+    # Ensure all required columns exist
+    required_cols = ['original_id', 'text', 'pred_cluster_id', 'pred_cluster_rank', 'is_representative']
+    for col in required_cols:
+        if col not in df_faiss.columns and col == 'original_id':
+             # If original_id missing in CSV, assume it matches index if aligned
+             df_faiss['original_id'] = df_faiss.index
+    
+    # 3. Load MinHash/SimHash Results (Handle missing files gracefully)
     try:
         df_mh = pd.read_csv(MINHASH_CSV)
-        # Rename columns to match standard
         df_mh = df_mh.rename(columns={
             'id': 'original_id', 
             'cluster_id': 'pred_cluster_id', 
@@ -106,11 +119,10 @@ def load_data():
         })
     except FileNotFoundError:
         st.error(f"Missing {MINHASH_CSV}. Please run personal.py to generate it.")
-        df_mh = pd.DataFrame()
+        df_mh = pd.DataFrame(columns=required_cols)
 
     try:
         df_sh = pd.read_csv(SIMHASH_CSV)
-        # Rename columns to match standard
         df_sh = df_sh.rename(columns={
             'id': 'original_id', 
             'cluster_id': 'pred_cluster_id', 
@@ -118,7 +130,7 @@ def load_data():
         })
     except FileNotFoundError:
         st.error(f"Missing {SIMHASH_CSV}. Please run personal.py to generate it.")
-        df_sh = pd.DataFrame()
+        df_sh = pd.DataFrame(columns=required_cols)
 
     return X, df_gt, df_faiss, df_mh, df_sh
 
@@ -145,7 +157,7 @@ def build_indexes(texts, X):
     # Bloom Params
     bf = BloomFilter(n_items=len(texts), fp_rate=BLOOM_FP_RATE)
     
-    # Build Loop (No st.progress to avoid glitches)
+    # Build Loop
     for i, text in enumerate(texts):
         # MinHash
         shingles = get_shingles(text)
@@ -174,7 +186,6 @@ def build_indexes(texts, X):
 # ==== LOAD DATA & BUILD INDEXES ====
 with st.spinner("Loading System..."):
     model = load_model()
-    # Load all 4 DataFrames
     X, df_gt, df_faiss, df_mh, df_sh = load_data()
     
     # Align text with Embeddings (Sort by original_id)
@@ -194,8 +205,8 @@ def search_faiss_logic(query_text, top_k=5):
     """Semantic Search using FAISS CSV Clusters"""
     query_vec = model.encode([query_text], convert_to_numpy=True, normalize_embeddings=True)[0]
     
-    # Predicted Clusters (FAISS)
-    reps_pred = df_sorted[df_sorted['mean_semantic_remain'] == 1].copy()
+    # Predicted Clusters (FAISS) - Updated to use 'is_representative'
+    reps_pred = df_sorted[df_sorted['is_representative'] == 1].copy()
     sims_pred = X[reps_pred['original_id'].values] @ query_vec
     top_idxs_pred = np.argsort(sims_pred)[::-1][:top_k]
     
@@ -247,13 +258,9 @@ def search_minhash(query_text, top_k=5):
         score = np.mean(query_sig == cand_sig)
         
         # Look up Cluster ID from MinHash CSV
-        # We assume idx matches the row index if sorted by original_id, 
-        # or we find the row with original_id == idx
-        # Faster: Map original_id -> cluster_id
         cluster_id = -1
         try:
             # Finding the row in df_mh where original_id matches the candidate idx
-            # (Assuming idx in 'all_texts' == 'original_id')
             cluster_id = df_mh.loc[df_mh['original_id'] == idx, 'pred_cluster_id'].values[0]
         except:
             pass
@@ -364,7 +371,7 @@ if 'query' in st.session_state and st.session_state.query:
                     # Fetch from FAISS CSV
                     mems = df_faiss[df_faiss['pred_cluster_id'] == cid].sort_values('original_id')
                     for _, r in mems.iterrows():
-                        marker = "⭐" if r['mean_semantic_remain'] == 1 else "▪️"
+                        marker = "⭐" if r['is_representative'] == 1 else "▪️"
                         st.markdown(f"{marker} `[{r['original_id']}]` {r['text']}")
 
         # Ground Truth
@@ -399,7 +406,8 @@ if 'query' in st.session_state and st.session_state.query:
                     with st.expander(f"See MinHash Cluster {int(cid)} Members"):
                         mems = df_mh[df_mh['pred_cluster_id'] == cid].sort_values('original_id')
                         for _, row in mems.iterrows():
-                             st.markdown(f"`[{row['original_id']}]` {row['text']}")
+                             marker = "⭐" if row['is_representative'] == 1 else "▪️"
+                             st.markdown(f"{marker} `[{row['original_id']}]` {row['text']}")
         else:
             st.warning("No matches in LSH buckets.")
 
@@ -422,6 +430,7 @@ if 'query' in st.session_state and st.session_state.query:
                     with st.expander(f"See SimHash Cluster {int(cid)} Members"):
                         mems = df_sh[df_sh['pred_cluster_id'] == cid].sort_values('original_id')
                         for _, row in mems.iterrows():
-                             st.markdown(f"`[{row['original_id']}]` {row['text']}")
+                             marker = "⭐" if row['is_representative'] == 1 else "▪️"
+                             st.markdown(f"{marker} `[{row['original_id']}]` {row['text']}")
         else:
             st.warning("No matches in LSH buckets.")
