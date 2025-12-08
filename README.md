@@ -24,9 +24,9 @@ project/
 └── web_for_checking_clustering/               # Streamlit web application
    ├── app.py                                  # Python script used for web application
     ├── qqp_clusters_grouped.csv               # Ground truth clusters
-    ├── qqp_pred_clusters_faiss_grouped.csv    # Predicted clusters (FAISS)
-    ├── results_minhash.csv                    # Predicted clusters (MinHash)
-    ├── results_simhash.csv                    # Predicted clusters (SimHash)
+    ├── qqp_pred_clusters_faiss_grouped.csv    # Predicted clusters (FAISS) (used for this app but also is the resulted files generated from gen_csv_file_and_eval.ipynb)
+    ├── results_minhash.csv                    # Predicted clusters (MinHash) (used for this app but also is the resulted files generated from gen_csv_file_and_eval.ipynb)
+    ├── results_simhash.csv                    # Predicted clusters (SimHash) (used for this app but also is the resulted files generated from gen_csv_file_and_eval.ipynb)
     └── requirements.txt                       # Python dependencies
 
 ```
