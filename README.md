@@ -16,16 +16,18 @@ Link to the github page: https://mhaih.github.io/Hoc_phan_mo_rong_dsa_deduptext
 ```
 project/
 │
-├── gen_csv_file_and_eval.ipynb    # Main clustering pipeline + evaluation
+├── gen_csv_file_and_eval.ipynb                # Main clustering pipeline + evaluation (faiss + hashing methods)
+├── hpmrt.ipynb                                # code implement faiss (seperated)
+├── personal.ipynb                             # code implementing hashing methods (seperated)
 ├──  web_demo/
-│   └──app.py                         # web using for demo (gen csv files from docx)
-└── web_for_checking_clustering/                         # Streamlit web application
-   ├── app.py # Python script used for web application
-    ├── qqp_clusters_grouped.csv       # Ground truth clusters
-    ├── qqp_pred_clusters_faiss_grouped.csv  # Predicted clusters (FAISS)
-    ├── results_minhash.csv # Predicted clusters (MinHash)
-    ├── results_simhash.csv # Predicted clusters (SimHash)
-    └── requirements.txt                # Python dependencies
+│   └──app.py                                  # web using for demo (gen csv files from docx)
+└── web_for_checking_clustering/               # Streamlit web application
+   ├── app.py                                  # Python script used for web application
+    ├── qqp_clusters_grouped.csv               # Ground truth clusters
+    ├── qqp_pred_clusters_faiss_grouped.csv    # Predicted clusters (FAISS)
+    ├── results_minhash.csv                    # Predicted clusters (MinHash)
+    ├── results_simhash.csv                    # Predicted clusters (SimHash)
+    └── requirements.txt                       # Python dependencies
 
 ```
 We cant include file X_float32.npy here because the file itself is pretty large (700 MB)
