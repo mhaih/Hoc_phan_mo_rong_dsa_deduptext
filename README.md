@@ -161,10 +161,7 @@ If you plan to run the code again:
 2.  Click "Run All".
 3.  This will generate the CSV files and evaluation metrics.
 
-### 2. Running the Demo (Notebook)
-If you want to run the demo code without the web interface, run `query_clusters.ipynb`.
-
-### 3. About the Embeddings (`X_float32.npy`)
+### 2. About the Embeddings (`X_float32.npy`)
 This project uses pre-computed embeddings using the **sentence-transformers/all-MiniLM-L6-v2** model.
 - Generating this from scratch takes a long time on CPU.
 - It takes about 10 mins on a T4 GPU (Google Colab).
@@ -200,26 +197,22 @@ This project includes a **Streamlit** dashboard that allows you to interactively
 
 ### Prerequisites
 1.  Ensure you have Python installed (3.8+).
-2.  Ensure you have the `X_float32.npy` file placed inside the `web/` folder.
+2.  Ensure you have the `X_float32.npy` file placed inside the `web_for_checking_clustering/` folder.
 
 ### Installation & Execution
 
 1.  **Navigate to the web directory:**
     ```bash
-    cd project/web
+    cd project/web_for_checking_clustering
     ```
 
-2.  **Install dependencies:**
-    ```bash
-    pip install -r requirements.txt
-    ```
 
-3.  **Run the App:**
+2.  **Run the App:**
     ```bash
     streamlit run app.py
     ```
 
-4.  **Access the Dashboard:**
+3.  **Access the Dashboard:**
     The application will automatically open at `http://localhost:8501`.
 ---
 ## About the Data
