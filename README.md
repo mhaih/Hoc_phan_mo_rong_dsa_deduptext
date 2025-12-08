@@ -17,8 +17,10 @@ Link to the github page: https://mhaih.github.io/Hoc_phan_mo_rong_dsa_deduptext
 project/
 │
 ├── gen_csv_file_and_eval.ipynb    # Main clustering pipeline + evaluation
-└── web/                         # Streamlit web application
-    ├── app.py # Python script used for web application
+├──  web_demo/
+│   └──app.py                         # web using for demo (gen csv files from docx)
+└── web_for_checking_clustering/                         # Streamlit web application
+   ├── app.py # Python script used for web application
     ├── qqp_clusters_grouped.csv       # Ground truth clusters
     ├── qqp_pred_clusters_faiss_grouped.csv  # Predicted clusters (FAISS)
     ├── results_minhash.csv # Predicted clusters (MinHash)
