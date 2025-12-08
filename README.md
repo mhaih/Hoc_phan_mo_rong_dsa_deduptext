@@ -193,13 +193,33 @@ X = X.astype("float32")
 ---
 ## 🚀 How to Run the Web Application
 
-This project includes a **Streamlit** dashboard that allows you to interactively search and visualize the clusters using all four methods.
+This project includes 2 **Streamlit** dashboard that allows you to interactively search and visualize the clusters using all methods.
+### 1. web_demo
+This is web for demo
+#### Prerequisites
+1.  Ensure you have Python installed (3.8+).
 
-### Prerequisites
+#### Installation & Execution
+
+1.  **Navigate to the web directory:**
+    ```bash
+    cd project/web_demo
+    ```
+
+2.  **Run the App:**
+    ```bash
+    streamlit run app.py
+    ```
+
+3.  **Access the Dashboard:**
+    The application will automatically open at `http://localhost:8501`.
+    
+### 2. web_for_checking_clustering
+#### Prerequisites
 1.  Ensure you have Python installed (3.8+).
 2.  Ensure you have the `X_float32.npy` file placed inside the `web_for_checking_clustering/` folder.
 
-### Installation & Execution
+#### Installation & Execution
 
 1.  **Navigate to the web directory:**
     ```bash
