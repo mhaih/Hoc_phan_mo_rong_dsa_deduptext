@@ -203,7 +203,7 @@ This is web for demo
 
 1.  **Navigate to the web directory:**
     ```bash
-    cd project/web_demo
+    cd project/web_for_demo
     ```
 
 2.  **Run the App:**
