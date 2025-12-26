@@ -385,9 +385,8 @@ run_button = col_run.button("Run clustering")
 with col_info:
     st.info(
         "Note: The app itself does **not** call any online translator. "
-        "If you want a pure-English example from your Vietnamese `data_demo.docx`, "
-        "please translate it first (e.g. with ChatGPT or another tool), "
-        "save to a new `.docx`, then upload here."
+        "And it can only produce good result for English."
+        "If the end user want to use this web for Vietnamese or any other language, please use something different."
     )
 
 if run_button:
